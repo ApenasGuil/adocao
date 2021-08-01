@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,29 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group([
+    'namespace' => 'App\Http\Controllers',
+    // 'middleware' => [
+    //     'auth',
+    //     'checkRole:user'
+    //     ]
+    ], function () {
+    Route::resource('pets', 'PetController')->names('pet')->parameters([
+        'pets' => 'pet'
+        ]);
+});
+
+Route::group([
+    'prefix' => 'admin',
+    // 'middleware' => [
+    //     'auth',
+    //     'checkRole:admin'
+    //     ]
+    ], function () {
+        Route::resource('user', UserController::class)->names('user')->parameters([
+            'users' => 'user'
+        ]);
+    // Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
 });
