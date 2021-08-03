@@ -2,6 +2,7 @@
 @section('title', 'USERS')
 
 @section('content')
+<h1>Admin: Lista de usuários</h1>
     <table class="table">
         <thead class="table-dark">
             <tr>
@@ -14,10 +15,10 @@
         <tbody>
             @foreach ($users as $user)
                 <tr>
-                    <th>{{ $user->id }}</th>
-                    <th>{{ $user->name }}</th>
-                    <th>{{ $user->email }}</th>
-                    <th>{{ $user->pets->count() }}</th>
+                    <td>{{ $user->id }}</td>
+                    <td><a href="{{ route('user.show', ['user' => $user->id]) }}">{{ $user->name }}</a></td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->pets->count() }}</td>
                 </tr>
             @endforeach
         </tbody>

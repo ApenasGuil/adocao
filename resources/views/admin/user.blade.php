@@ -5,24 +5,26 @@
     <p><strong>Nome:</strong> {{ $user->name }}</p>
     <p><strong>E-mail:</strong> {{ $user->email }}</p>
     <p>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Pets</th>
+            </tr>
+        </thead>
         @if ($user->pets->count())
-            <table class="table">
-                <thead class="table-dark">
+            <tbody>
+                @foreach ($user->pets as $pet)
                     <tr>
-                        <th scope="col">Pets</th>
+                        <td>{{ $pet->name }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($user->pets as $pet)
-                        <tr>
-                            <td>{{ $pet->name }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <p>No pets added.</p>
-        @endif
+                @endforeach
+            </tbody>
+    </table>
+@else
+    <tr>
+        <td>No pets added.</td>
+    </tr>
+    @endif
 
     </p>
 @endsection

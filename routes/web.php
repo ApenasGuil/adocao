@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,20 +15,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', function () { // Redirect admin/users to admin/users
+    return redirect()->route('users.index');
 });
 
 Route::group([
-    'namespace' => 'App\Http\Controllers',
     // 'middleware' => [
     //     'auth',
     //     'checkRole:user'
     //     ]
-    ], function () {
-    Route::resource('pets', 'PetController')->names('pet')->parameters([
+], function () {
+    Route::resource('pet', PetController::class)->names('pet')->parameters([
         'pets' => 'pet'
-        ]);
+    ])->except([
+        'index',
+    ]);
+    Route::get('/pet', function () { // Redirect /pet to /pets
+        return redirect()->route('pets.index');
+    });
+    Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
 });
 
 Route::group([
@@ -36,9 +46,16 @@ Route::group([
     //     'auth',
     //     'checkRole:admin'
     //     ]
-    ], function () {
-        Route::resource('user', UserController::class)->names('user')->parameters([
-            'users' => 'user'
-        ]);
-    // Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+], function () {
+    Route::resource('user', UserController::class)->names('user')->parameters([
+        'users' => 'user'
+    ])->except([
+        'index',
+    ]);
+    Route::get('/user', function () { // Redirect admin/users to admin/users
+        return redirect()->route('users.index');
+    });
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
+
+    // Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');

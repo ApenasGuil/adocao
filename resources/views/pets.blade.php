@@ -1,4 +1,66 @@
 @extends('layout.master-layout')
+@section('title', 'Lista de pets')
+@section('content')
+    <h1>User: Lista de pets</h1>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Sex</th>
+                <th scope="col">Type</th>
+                <th scope="col">Breed</th>
+                <th scope="col">User</th>
+                <th class="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($pets as $pet)
+                <tr>
+                    <th scope="row">{{ $pet->id }}</th>
+                    <td>{{ $pet->name }}</td>
+                    <td>
+                        @if ($pet->sex === 0)
+                            Fêmea
+                        @elseif ($pet->sex === 1)
+                            Macho
+                        @endif
+                    </td>
+                    <td>
+                        @if ($pet->type === 'Gato' && $pet->sex === 0)
+                            <i style="color: pink" class="fs-2 fas fa-cat"></i>
+                        @elseif ($pet->type === 'Gato' && $pet->sex === 1)
+                            <i style="color: blue" class="fs-2 fas fa-cat"></i>
+                        @elseif ($pet->type === 'Cão' && $pet->sex === 0)
+                            <i style="color: pink" class="fs-2 fas fa-dog"></i>
+                        @elseif ($pet->type === 'Cão' && $pet->sex === 1)
+                            <i style="color: blue" class="fs-2 fas fa-dog"></i>
+                        @endif
+                    </td>
+                    <td>{{ $pet->breed }}</td>
+                    <td><a href="{{ route('user.show', ['user' => $pet->user->id]) }}">{{ $pet->user->name }}</a></td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <a class="btn btn-outline-primary" href="{{ route('pet.show', ['pet' => $pet->id]) }}"
+                                role="button"><i class="fas fa-info"></i></a>
+                            <a class="btn btn-outline-warning" href="{{ route('pet.edit', ['pet' => $pet->id]) }}"
+                                role="button"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-outline-danger" onclick="return confirm('Deseja mesmo deletar esse petzinho?')"
+                                href="{{ route('pet.destroy', $pet->id) }}"><i class="fa fa-trash"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+
+
+
+@endsection
+
+
+{{-- @extends('layout.master-layout')
 @section('title', 'PETS')
 
 @section('content')
@@ -35,4 +97,4 @@
         </tbody>
     </table>
     
-@endsection
+@endsection --}}
