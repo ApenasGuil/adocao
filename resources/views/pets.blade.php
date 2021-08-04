@@ -1,7 +1,34 @@
-@extends('layout.master-layout')
+@extends('layouts.app')
 @section('title', 'Lista de pets')
 @section('content')
     <h1>User: Lista de pets</h1>
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
     <table class="table">
         <thead class="table-dark">
             <tr>
@@ -45,7 +72,8 @@
                                 role="button"><i class="fas fa-info"></i></a>
                             <a class="btn btn-outline-warning" href="{{ route('pet.edit', ['pet' => $pet->id]) }}"
                                 role="button"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-outline-danger" onclick="return confirm('Deseja mesmo deletar esse petzinho?')"
+                            <a class="btn btn-outline-danger"
+                                onclick="return confirm('Deseja mesmo deletar esse petzinho?')"
                                 href="{{ route('pet.destroy', $pet->id) }}"><i class="fa fa-trash"></i></a>
                         </div>
                     </td>

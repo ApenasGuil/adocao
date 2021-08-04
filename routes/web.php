@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +21,14 @@ use App\Http\Controllers\PetController;
 // });
 
 Route::get('/', function () { // Redirect admin/users to admin/users
-    return redirect()->route('users.index');
+    return redirect()->route('pets.index');
 });
+
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register/do', [AuthController::class, 'register'])->name('register.do');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login/do', [AuthController::class, 'login'])->name('login.do');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group([
     // 'middleware' => [
@@ -58,4 +65,5 @@ Route::group([
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
 
-    // Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+Route::view('/crop', 'crop-avatar')->name('sexo');
+Route::POST('/crop_avatar', [AuthController::class, 'crop_avatar'])->name('imageupload');

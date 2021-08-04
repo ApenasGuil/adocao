@@ -1,7 +1,9 @@
-@extends('layout.master-layout')
+@extends('layouts.app')
 @section('title', 'USER')
 
 @section('content')
+    <br>
+    <img src="{{ asset('uploads/avatars/') }}/{{ $user->avatar }}" id="user_pic">
     <p><strong>Nome:</strong> {{ $user->name }}</p>
     <p><strong>E-mail:</strong> {{ $user->email }}</p>
     <p>
@@ -25,6 +27,5 @@
         <td>No pets added.</td>
     </tr>
     @endif
-
     </p>
 @endsection
