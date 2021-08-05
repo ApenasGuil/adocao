@@ -22,7 +22,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', function () { // Redirect admin/users to admin/users
     return redirect()->route('pets.index');
-});
+})->name('home');
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register/do', [AuthController::class, 'register'])->name('register.do');

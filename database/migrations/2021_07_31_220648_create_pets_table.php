@@ -20,6 +20,7 @@ class CreatePetsTable extends Migration
             $table->boolean('sex');
             $table->string('type');
             $table->string('breed');
+            $table->string('bio');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

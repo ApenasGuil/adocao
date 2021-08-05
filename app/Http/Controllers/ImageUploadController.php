@@ -13,6 +13,7 @@ class ImageUploadController extends Controller
         // dd($image->toArray());
         return view('welcome', compact('image'));
     }
+    
     public function upload(Request $request)
     {
         $input = $request->all();

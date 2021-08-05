@@ -3,36 +3,47 @@
 @section('content')
     @component('components.alert') @endcomponent
 
-    <h2>Registro</h2>
+    <h2 class="mt-3">Cadastro</h2>
 
-    <form class="form-signin" method="post" action="{{ route('register.do') }}">
+    <form class="form-signin needs-validation mt-3" method="post" action="{{ route('register.do') }}" novalidate>
         @csrf
-        <div class="mb-3">
-            <label for="name" class="form-label">Nome</label>
-            <input type="text" class="form-control" name="name" id="name" aria-describedby="name">
+        <div class="form-floating mb-3">
+            <input value="{{ old('name') }}" type="text" class="form-control" aria-describedby="name" name="name" id="name"
+                placeholder="Nome" required>
+            <label for="name">Nome completo</label>
+            <div class="invalid-feedback">
+                Nome inválido.
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="cpf" class="form-label">CPF</label>
-            <input type="number" class="form-control" name="cpf" id="cpf" aria-describedby="cpf">
+        <div class="form-floating mb-3">
+            <input value="{{ old('cpf') }}" type="number" class="form-control" aria-describedby="cpf" name="cpf" id="cpf"
+                placeholder="CPF" required>
+            <label for="cpf">CPF</label>
             <div id="cpf" class="form-text">CPF meramente para nossa e sua proteção.</div>
+            <div class="invalid-feedback">
+                CPF inválido.
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="email" aria-describedby="email">
+        <div class="form-floating mb-3">
+            <input value="{{ old('email') }}" type="email" class="form-control" aria-describedby="email" name="email" id="email"
+                placeholder="E-mail" required>
+            <label for="email">E-mail</label>
+            <div class="invalid-feedback">
+                E-mail inválido.
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input type="password" class="form-control" name="password" id="password">
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" aria-describedby="password" name="password" id="password"
+                placeholder="password" required>
+            <label for="email">Senha</label>
+            <div class="invalid-feedback">
+                Senha inválido.
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-dark">Cadastrar</button>
     </form>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
-        integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
-        integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous">
-    </script>
+@endsection
+@push('my-scripts')
     <script>
         $("document").ready(function() {
             setTimeout(function() {
@@ -40,4 +51,26 @@
             }, 2500);
         });
     </script>
-@endsection
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+@endpush

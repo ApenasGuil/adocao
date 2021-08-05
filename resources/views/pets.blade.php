@@ -2,33 +2,48 @@
 @section('title', 'Lista de pets')
 @section('content')
     <h1>User: Lista de pets</h1>
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="..." alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+
+    <div class="row">
+        @foreach ($pets as $pet)
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{ asset('uploads/avatars/') }}/default/default.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @if ($pet->type === 'Gato' && $pet->sex === 0)
+                            <i style="color: pink" class="fs-4 fas fa-cat"></i>
+                        @elseif ($pet->type === 'Gato' && $pet->sex === 1)
+                            <i style="color: blue" class="fs-4 fas fa-cat"></i>
+                        @elseif ($pet->type === 'Cão' && $pet->sex === 0)
+                            <i style="color: pink" class="fs-4 fas fa-dog"></i>
+                        @elseif ($pet->type === 'Cão' && $pet->sex === 1)
+                            <i style="color: blue" class="fs-4 fas fa-dog"></i>
+                        @endif - {{ $pet->name }}
+                    </h5>
+                    <p class="card-text">
+
+                    </p>
+                    <p class="card-text">{{ $pet->bio }}</p>
+                    <a href="#" class="btn btn-primary">Ver mais dessa fofura</a>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+
         </div>
     </div>
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="..." alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="..." alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>
+
     <table class="table">
         <thead class="table-dark">
             <tr>

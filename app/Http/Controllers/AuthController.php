@@ -24,6 +24,11 @@ class AuthController extends Controller
 
     public function crop_avatar(Request $request)
     {
+        // usar validor em images
+        $validator = Validator::make($request->all(), [
+            'image' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
+        ]);
+
         // $user = User::where('id', '=', '4')->first();
         $input = $request->all();
 
@@ -145,35 +150,45 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $input['name'] = $request->name;
         $input['email'] = $request->email;
-        $rules = array([
-            'email' => 'unique:users,email',
-            'cpf' => 'unique',
-        ]);
+        $input['cpf'] = $request->cpf;
+        $input['password'] = $request->password;
+
+        $rules = [
+            'name' => 'required|max:5',
+            'email' => 'required|unique:users|email',
+            'cpf' => 'required|unique:users',
+            'password' => 'required'
+        ];
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
+            dd('validator pegou');
             return redirect()->route('register')->with([
                 'error' => 'danger',
-                'msg' => 'Erro ao cadastrar usuário!',
-            ]);
+                'msg' => 'Campos inválidos. Tente novamente.',
+            ])->withInput($request->except('password'));
         } else {
             $newUser = new User;
-            $newUser->name = $request->name;
-            $newUser->email = $request->email;
-            $newUser->password = Hash::make($request->password);
-            $newUser->save();
+            $newUser->name = $input['name'];
+            $newUser->email = $input['email'];
+            $newUser->cpf = $input['cpf'];
+            $newUser->password = Hash::make($input['password']);
+            // $newUser->save();
 
-            if (!Auth::login($newUser)) {
-                return redirect()->route('login');
+            if ($newUser->save()) {
+                Auth::login($newUser);
+                return redirect()->route('home');
+            } else {
+                return redirect()->route('register')->with([
+                    'error' => 'danger',
+                    'msg' => 'Algo deu errado, por favor entre em contato com o administrador do site.',
+                ])->withInput($request->except('password'));
             }
-
-            return redirect()->route('register')->with([
-                'error' => 'success',
-                'msg' => 'Usuário cadastrado com sucesso!',
-            ]);
         }
     }
+
 
     public function dashboard()
     {
