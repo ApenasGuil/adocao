@@ -6,44 +6,45 @@
 
     <h2 class="mt-3">Doar um bichinho</h2>
 
-    <form class="form-signin mt-3" method="post" action="{{ route('register.do') }}">
+    <form class="form-signin mt-3" method="post" action="{{ route('pet.do') }}">
         @csrf
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="name" placeholder="Totó">
+            <input value="{{ old('name') }}" type="text" class="form-control" name="name" id="name" placeholder="Totó">
             <label for="name">Como se chama o nosso amiguinho(a)?</label>
         </div>
         <div class="mb-3">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="tipo">Tipo</label>
+                    <label class="input-group-text" for="type">Tipo</label>
                 </div>
-                <select class="custom-select" id="tipo">
-                    <option selected>...</option>
-                    <option value="1">Doguinho</option>
-                    <option value="2">Gatinho</option>
-                    <option value="3">Passarinho</option>
-                    <option value="4">Ratinho</option>
-                    <option value="4">Réptilzinho</option>
+                <select class="custom-select" name="type" id="type">
+                    <option value="" selected>...</option>
+                    <option value="dog" @if (old('type') == 'dog') selected @endif>Doguinho</option>
+                    <option value="cat" @if (old('type') == 'cat') selected @endif>Gatinho</option>
+                    <option value="bird" @if (old('type') == 'bird') selected @endif>Passarinho</option>
+                    <option value="mice" @if (old('type') == 'mice') selected @endif>Ratinho</option>
+                    <option value="reptile" @if (old('type') == 'reptile') selected @endif>Réptilzinho</option>
                 </select>
             </div>
         </div>
         <div class="form-floating mb-3">
-            <input type="breed" class="form-control" name="breed" id="breed" placeholder="RND">
+            <input value="{{ old('breed') }}" type="breed" class="form-control" name="breed" id="breed" placeholder="RND">
             <label for="breed">Raça ('RND' para Raça Não Definida)</label>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Sexo</label><br>
-            <input type="radio" id="html" name="fav_language" value="HTML">
-            <label for="html">Macho</label><br>
-            <input type="radio" id="css" name="fav_language" value="CSS">
-            <label for="css">Fêmea</label><br>
+            <input @if (old('sex') == 'male') checked @endif type="radio" id="male" name="sex" value="male">
+            <label for="male">Macho</label><br>
+            <input @if (old('sex') == 'female') checked @endif type="radio" id="female" name="sex" value="female">
+            <label for="female">Fêmea</label><br>
         </div>
         <div class="form-floating mb-3">
-            <input type="number" class="form-control" name="age" id="age" placeholder="3 meses">
+            <input value="{{ old('age') }}" type="number" class="form-control" name="age" id="age" placeholder="3 meses">
             <label for="age">Idade aproximada (em meses)</label>
         </div>
         <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Muuuito brincalhão" name="bio" id="bio"></textarea>
+            <input value="{{ old('bio') }}" type="text" class="form-control" name="bio" id="bio"
+                placeholder="Muuuito brincalhão">
             <label for="bio">Descreva brevemente como é o bicho</label>
         </div>
         <button type="submit" class="btn btn-dark">Doar</button>

@@ -45,6 +45,8 @@ Route::group([
         return redirect()->route('pets.index');
     });
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
+
+    Route::post('/add-pet/do', [PetController::class, 'store'])->name('pet.do');
 });
 
 Route::group([
