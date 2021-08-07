@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -156,7 +157,7 @@ class AuthController extends Controller
         $input['password'] = $request->password;
 
         $rules = [
-            'name' => 'required|max:5',
+            'name' => 'required',
             'email' => 'required|unique:users|email',
             'cpf' => 'required|unique:users',
             'password' => 'required'
@@ -164,7 +165,6 @@ class AuthController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
-            dd('validator pegou');
             return redirect()->route('register')->with([
                 'error' => 'danger',
                 'msg' => 'Campos inválidos. Tente novamente.',
@@ -179,7 +179,7 @@ class AuthController extends Controller
 
             if ($newUser->save()) {
                 Auth::login($newUser);
-                return redirect()->route('home');
+                return redirect(RouteServiceProvider::HOME);
             } else {
                 return redirect()->route('register')->with([
                     'error' => 'danger',

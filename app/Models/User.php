@@ -41,8 +41,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function isAdmin()
+    {
+        if ($this->role_id == '1') {
+            return true;
+        }
+        return false;
+    }
+
     public function pets()
     {
         return $this->hasMany(Pet::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

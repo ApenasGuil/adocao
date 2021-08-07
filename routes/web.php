@@ -22,19 +22,26 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', function () { // Redirect admin/users to admin/users
     return redirect()->route('pets.index');
-})->name('home');
+});
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register/do', [AuthController::class, 'register'])->name('register.do');
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login/do', [AuthController::class, 'login'])->name('login.do');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group([
-    // 'middleware' => [
-    //     'auth',
-    //     'checkRole:user'
-    //     ]
+    'middleware' => [
+        'guest',
+    ]
+], function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login/do', [AuthController::class, 'login'])->name('login.do');
+});
+
+Route::group([
+    'middleware' => [
+        'auth',
+        'checkRole:user'
+    ]
 ], function () {
     Route::resource('pet', PetController::class)->names('pet')->parameters([
         'pets' => 'pet'
@@ -51,10 +58,10 @@ Route::group([
 
 Route::group([
     'prefix' => 'admin',
-    // 'middleware' => [
-    //     'auth',
-    //     'checkRole:admin'
-    //     ]
+    'middleware' => [
+        'auth',
+        'checkRole:admin'
+    ]
 ], function () {
     Route::resource('user', UserController::class)->names('user')->parameters([
         'users' => 'user'
@@ -69,3 +76,8 @@ Route::group([
 
 Route::view('/crop', 'crop-avatar')->name('sexo');
 Route::POST('/crop_avatar', [AuthController::class, 'crop_avatar'])->name('imageupload');
+
+// TO DO LIST:
+// [ ] Change routes from admin group to (make) user group
+// [ ] Try to use @can directive & authorization
+// [ ] Show $user->name insted of id on URL (make slug)
