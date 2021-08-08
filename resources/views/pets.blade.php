@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Lista de pets')
 @section('content')
+    @component('components.alert') @endcomponent
     <h1>User: Lista de pets</h1>
 
     <div class="row">
@@ -9,21 +10,21 @@
                 <img class="card-img-top" src="{{ asset('uploads/avatars/') }}/default/default.png" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">
-                        @if ($pet->type === 'Gato' && $pet->sex === 0)
+                        @if ($pet->type === 'cat' && $pet->sex === 0)
                             <i style="color: pink" class="fs-4 fas fa-cat"></i>
-                        @elseif ($pet->type === 'Gato' && $pet->sex === 1)
+                        @elseif ($pet->type === 'cat' && $pet->sex === 1)
                             <i style="color: blue" class="fs-4 fas fa-cat"></i>
-                        @elseif ($pet->type === 'Cão' && $pet->sex === 0)
+                        @elseif ($pet->type === 'dog' && $pet->sex === 0)
                             <i style="color: pink" class="fs-4 fas fa-dog"></i>
-                        @elseif ($pet->type === 'Cão' && $pet->sex === 1)
+                        @elseif ($pet->type === 'dog' && $pet->sex === 1)
                             <i style="color: blue" class="fs-4 fas fa-dog"></i>
-                        @endif - {{ $pet->name }}
+                        @endif {{ $pet->name }}
                     </h5>
-                    <p class="card-text">
-
-                    </p>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ $pet->created_at }}</h6>
                     <p class="card-text">{{ $pet->bio }}</p>
-                    <a href="#" class="btn btn-primary">Ver mais dessa fofura</a>
+                    <p class="card-text"><small class="text-muted">{{ $pet->user->name }}</small></p>
+                    <a href="{{ route('pet.show', ['pet' => $pet->id]) }}" class="btn btn-primary">Ver mais dessa
+                        fofura</a>
                 </div>
             </div>
         @endforeach

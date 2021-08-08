@@ -21,6 +21,7 @@
 
     <link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
     <script src="https://fengyuanchen.github.io/cropperjs/js/cropper.js"></script>
+    <script src="{{ asset('js/jQuery-Mask-Plugin-master/src/jquery.mask.js') }}"></script>
     @stack('my-styles')
 </head>
 
@@ -76,13 +77,9 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @auth
                             <li class="nav-item">
-                                <img src="{{ asset('uploads/avatars/') }}/{{ Auth::user()->avatar }}"
+                                <img class="float-left"
+                                    src="{{ asset('uploads/avatars/') }}/{{ Auth::user()->avatar }}"
                                     alt="user profile pic" id="user_pic_navbar">
-                            </li>
-                            <li class="nav-item">
-                                {{-- <a class="nav-link {{ Route::currentRouteNamed('users.index') ? 'active' : '' }}"
-                                    aria-current="page" href="{{ route('user.show', ['user' => $user->id]) }}">Nome de
-                                    Usuário</a> --}}
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -97,7 +94,6 @@
                             <li><a class="dropdown-item {{ Route::currentRouteNamed('#') ? 'active' : '' }}"
                                     href="{{ route('logout') }}">Desconectar</a></li>
                         </ul>
-                        </li>
                     @endauth
 
                     @guest

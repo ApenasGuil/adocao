@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Pet;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -42,62 +44,58 @@ class PetController extends Controller
      */
     public function store(User $user, Request $request)
     {
-        if (
-            $request->name == null  ||
-            $request->type === null ||
-            $request->breed == null ||
-            $request->sex == null   ||
-            $request->age == null   ||
-            $request->bio == null
-        ) {
-            return Redirect::back()->with([
-                'error' => 'danger',
-                'msg' => 'algo esta vazio!',
-            ])->withInput($request->all());
-        }
-        return Redirect::back()->with([
-            'error' => 'success',
-            'msg' => 'sexooooooooooooooooo',
-        ])->withInput($request->all());
+        $input['name'] = $request->name;
+        $input['age'] = $request->age;
+        $input['sex'] = $request->sex;
+        $input['type'] = $request->type;
+        $input['breed'] = $request->breed;
+        $input['bio'] = $request->bio;
+        $input['picture'] = $request->picture;
 
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'name' => 'required',
+            'age' => 'required',
+            'sex' => 'required',
             'type' => 'required',
             'breed' => 'required',
-            'sex' => 'required',
-            'age' => 'required',
             'bio' => 'required',
-        ]);
-
-        dd($request->all());
-
-        if ($request['sex'] == 'male') {
-            dd('male');
-        } elseif ($request['sex'] == 'female') {
-            dd('female');
-        }
+            'picture' => 'image',
+        ];
+        $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
             return redirect()->route('register')->with([
                 'error' => 'danger',
-                'msg' => 'SEM SEXO!',
+                'msg' => 'Campos inválidos. Tente novamente.',
             ]);
         } else {
-            dd('sexooooooooooooooooo');
-            $newUser = new User;
-            $newUser->name = $request->name;
-            $newUser->email = $request->email;
-            $newUser->password = Hash::make($request->password);
-            $newUser->save();
-
-            if (!Auth::login($newUser)) {
-                return redirect()->route('login');
+            
+            $pet = new Pet;
+            $pet->name = $request->name;
+            $pet->age = $request->age;
+            if($request->sex == 'male')
+            {
+                $pet->sex = '1';
+            } else {
+                $pet->sex = '0';
             }
+            $pet->type = $request->type;
+            $pet->breed = $request->breed;
+            $pet->bio = $request->bio;
+            $pet->picture = $request->picture;
+            $pet->user_id = Auth::user()->id;
 
-            return redirect()->route('register')->with([
-                'error' => 'success',
-                'msg' => 'Usuário cadastrado com sucesso!',
-            ]);
+            if ($pet->save()) {
+                return redirect(RouteServiceProvider::HOME)->with([
+                    'error' => 'success',
+                    'msg' => 'Seu pet foi adicionado para adoção e já está visível!',
+                ]);
+            } else {
+                return redirect()->route('register')->with([
+                    'error' => 'danger',
+                    'msg' => 'Algo deu errado, por favor entre em contato com o administrador do site.',
+                ]);
+            }
         }
     }
 

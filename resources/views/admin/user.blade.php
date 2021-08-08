@@ -11,21 +11,21 @@
         <thead class="table-dark">
             <tr>
                 <th scope="col">Pets</th>
+                <th scope="col">Bio</th>
             </tr>
         </thead>
-        @if ($user->pets->count())
-            <tbody>
-                @foreach ($user->pets as $pet)
-                    <tr>
-                        <td>{{ $pet->name }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
+        <tbody>
+            @forelse ($user->pets as $pet)
+                <tr>
+                    <td>{{ $pet->name }}</td>
+                    <td>{{ $pet->bio }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td>No pets added.</td>
+                </tr>
+            @endforelse
+        </tbody>
     </table>
-@else
-    <tr>
-        <td>No pets added.</td>
-    </tr>
-    @endif
     </p>
 @endsection

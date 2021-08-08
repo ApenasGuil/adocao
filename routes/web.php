@@ -24,10 +24,6 @@ Route::get('/', function () { // Redirect admin/users to admin/users
     return redirect()->route('pets.index');
 });
 
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register/do', [AuthController::class, 'register'])->name('register.do');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::group([
     'middleware' => [
         'guest',
@@ -35,6 +31,16 @@ Route::group([
 ], function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login/do', [AuthController::class, 'login'])->name('login.do');
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register/do', [AuthController::class, 'register'])->name('register.do');
+});
+
+Route::group([
+    'middleware' => [
+        'auth',
+    ]
+], function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::group([
@@ -57,6 +63,19 @@ Route::group([
 });
 
 Route::group([
+    'middleware' => [
+        'auth',
+        'checkRole:user'
+    ]
+], function () {
+    Route::resource('user', PetController::class)->names('user')->parameters([
+        'users' => 'user'
+    ])->except([
+        'index',
+    ]);
+});
+
+Route::group([
     'prefix' => 'admin',
     'middleware' => [
         'auth',
@@ -74,10 +93,13 @@ Route::group([
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
 
+
+
 Route::view('/crop', 'crop-avatar')->name('sexo');
 Route::POST('/crop_avatar', [AuthController::class, 'crop_avatar'])->name('imageupload');
 
 // TO DO LIST:
 // [ ] Change routes from admin group to (make) user group
+// [ ] Create profile page /profile
 // [ ] Try to use @can directive & authorization
 // [ ] Show $user->name insted of id on URL (make slug)

@@ -151,9 +151,12 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $request->cpf = str_replace("-", " ", $request->cpf); // Remove hyphen
+        $request->cpf = preg_replace('/[\@\.\;\" "]+/', '', $request->cpf); // Remove all 
+
         $input['name'] = $request->name;
         $input['email'] = $request->email;
-        $input['cpf'] = $request->cpf;
+        $input['cpf'] = preg_replace('/[\@\.\;\" "]+/', '', $request->cpf);
         $input['password'] = $request->password;
 
         $rules = [
