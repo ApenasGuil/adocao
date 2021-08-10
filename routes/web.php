@@ -22,7 +22,12 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', function () { // Redirect admin/users to admin/users
     return redirect()->route('pets.index');
+})->name('home');
+
+Route::get('/pet', function () { // Redirect /pet to /pets
+    return redirect()->route('pets.index');
 });
+Route::get('/pets', [PetController::class, 'index'])->name('pets.index'); // main page
 
 Route::group([
     'middleware' => [
@@ -54,10 +59,7 @@ Route::group([
     ])->except([
         'index',
     ]);
-    Route::get('/pet', function () { // Redirect /pet to /pets
-        return redirect()->route('pets.index');
-    });
-    Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
+    
 
     Route::post('/add-pet/do', [PetController::class, 'store'])->name('pet.do');
 });
@@ -66,20 +68,6 @@ Route::group([
     'middleware' => [
         'auth',
         'checkRole:user'
-    ]
-], function () {
-    Route::resource('user', PetController::class)->names('user')->parameters([
-        'users' => 'user'
-    ])->except([
-        'index',
-    ]);
-});
-
-Route::group([
-    'prefix' => 'admin',
-    'middleware' => [
-        'auth',
-        'checkRole:admin'
     ]
 ], function () {
     Route::resource('user', UserController::class)->names('user')->parameters([
@@ -93,13 +81,18 @@ Route::group([
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
 
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => [
+        'auth',
+        'checkRole:admin'
+    ]
+], function () {
+    
+});
+
 
 
 Route::view('/crop', 'crop-avatar')->name('sexo');
-Route::POST('/crop_avatar', [AuthController::class, 'crop_avatar'])->name('imageupload');
-
-// TO DO LIST:
-// [ ] Change routes from admin group to (make) user group
-// [ ] Create profile page /profile
-// [ ] Try to use @can directive & authorization
-// [ ] Show $user->name insted of id on URL (make slug)
+// Route::POST('/crop_avatar', [AuthController::class, 'crop_avatar'])->name('imageupload');
+Route::POST('/crop_avatar', [UserController::class, 'upload_profile_picture'])->name('imageupload');

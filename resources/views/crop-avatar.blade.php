@@ -122,15 +122,18 @@
         </div>
         <div class="avatar-preview container2">
             @php
-            if (Auth::user()->avatar == 'default/default.png')
-            {
-                $url = url('uploads/avatars/default/default.png');
-                $imgs = "background-image:url($url)";
-            }else
-            {
-                $url = url('uploads/avatars/' . '/' . Auth::user()->avatar);
-                $imgs = "background-image:url($url)";
-            }
+            // if (Auth::user()->avatar == 'default/default.png')
+            // {
+            //     $url = url('uploads/pictures/default/default.png');
+            //     $imgs = "background-image:url($url)";
+            // }else
+            // {
+            //     // $url = url('uploads/avatars/' . '/' . Auth::user()->avatar);
+            //     $url = url('uploads/pictures/user-' . Auth::user()->id . '/avatar' . '/' . Auth::user()->avatar);
+            //     $imgs = "background-image:url($url)";
+            // }
+            $url = url(Auth::user()->get_avatar());
+            $imgs = "background-image:url($url)";
             @endphp
             {{-- @php
                 if (!empty($image->image) && $image->image != '' && file_exists(public_path('images/' . $image->image))) {

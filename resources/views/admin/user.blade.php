@@ -3,7 +3,9 @@
 
 @section('content')
     <br>
-    <img src="{{ asset('uploads/avatars/') }}/{{ $user->avatar }}" id="user_pic">
+    {{-- <img src="{{ asset('uploads/pictures/user-') }}{{ $user->id }}/avatar/{{ $user->avatar }}" id="user_pic"> --}}
+    {{-- <img src="{{ session()->get('pic') }}" id="user_pic"> --}}
+    <img src="{{ asset($user->get_user_avatar()) }}" id="user_pic">
     <p><strong>Nome:</strong> {{ $user->name }}</p>
     <p><strong>E-mail:</strong> {{ $user->email }}</p>
     <p>

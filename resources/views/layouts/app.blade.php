@@ -28,7 +28,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('login') }}"><strong>{{ config('app.name') }}</strong></a>
+            <a class="navbar-brand" href="{{ route('home') }}"><strong>{{ config('app.name') }}</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('register') }}">Quer doar um bichinho?
-                                Cadastre-se agora mesmo! É gratuito, rápido e fácil! <i class="pl-3 fas fa-paw"></i></a>
+                                <span style="color:rgb(255, 174, 0)">Cadastre-se</span> agora mesmo! É gratuito, rápido e fácil! <span style="color:rgb(255, 174, 0)"><i class="pl-3 fas fa-paw"></i></span></a>
                         </li>
                     </ul>
                 @endguest
@@ -78,7 +78,7 @@
                         @auth
                             <li class="nav-item">
                                 <img class="float-left"
-                                    src="{{ asset('uploads/avatars/') }}/{{ Auth::user()->avatar }}"
+                                    src="{{ Auth::user()->get_avatar() }}"
                                     alt="user profile pic" id="user_pic_navbar">
                             </li>
                             <li class="nav-item dropdown">
@@ -92,7 +92,7 @@
                                     <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item {{ Route::currentRouteNamed('#') ? 'active' : '' }}"
-                                    href="{{ route('logout') }}">Desconectar</a></li>
+                                    href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Desconectar</a></li>
                         </ul>
                     @endauth
 
@@ -115,7 +115,8 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    @yield('content')
+    {{-- <div class="container-fluid">
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
@@ -123,7 +124,7 @@
             </div>
             <div class="col-md-1"></div>
         </div>
-    </div>
+    </div> --}}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
         integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous">
     </script>

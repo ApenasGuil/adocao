@@ -58,4 +58,22 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function get_avatar()
+    {
+        if($this->avatar == 'default.png')
+        {
+            return '/uploads/pictures/default/default.png';
+        }
+
+        return '/uploads/pictures/user-' . $this->id . '/avatar'. '/' . $this->avatar;
+    }
+
+    public function get_user_avatar()
+    {
+        if ($this->avatar == 'default.png')
+            return 'uploads/pictures/default/default.png';
+        else
+            return $this->get_avatar();
+    }
 }

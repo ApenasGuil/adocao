@@ -17,7 +17,7 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
-                    <td><img width="25" src="{{ asset('uploads/avatars/') }}/{{ $user->avatar }}" alt=""></td>
+                    <td><img width="30" src="{{ asset($user->get_user_avatar()) }}" alt=""></td>
                     <td><a href="{{ route('user.show', ['user' => $user->id]) }}">{{ $user->name }}</a></td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->pets->count() }}</td>

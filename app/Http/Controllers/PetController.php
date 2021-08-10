@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class PetController extends Controller
 {
@@ -20,7 +22,7 @@ class PetController extends Controller
      */
     public function index()
     {
-        $pets = Pet::all();
+        $pets = Pet::orderBy('id', 'desc')->get();
         return view('pets', [
             'pets' => $pets
         ]);
@@ -50,7 +52,7 @@ class PetController extends Controller
         $input['type'] = $request->type;
         $input['breed'] = $request->breed;
         $input['bio'] = $request->bio;
-        $input['picture'] = $request->picture;
+        $input['foto'] = $request->fotinha;
 
         $rules = [
             'name' => 'required',
@@ -59,8 +61,9 @@ class PetController extends Controller
             'type' => 'required',
             'breed' => 'required',
             'bio' => 'required',
-            'picture' => 'image',
+            'fotinha' => 'mimes:jpeg,bmp,png,svg',
         ];
+
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
@@ -69,12 +72,11 @@ class PetController extends Controller
                 'msg' => 'Campos inválidos. Tente novamente.',
             ]);
         } else {
-            
             $pet = new Pet;
+            $pet->user_id = Auth::user()->id;
             $pet->name = $request->name;
             $pet->age = $request->age;
-            if($request->sex == 'male')
-            {
+            if ($request->sex == 'male') {
                 $pet->sex = '1';
             } else {
                 $pet->sex = '0';
@@ -82,16 +84,36 @@ class PetController extends Controller
             $pet->type = $request->type;
             $pet->breed = $request->breed;
             $pet->bio = $request->bio;
-            $pet->picture = $request->picture;
-            $pet->user_id = Auth::user()->id;
+            $pet->picture = 'null';
+            $pet->save();
 
-            if ($pet->save()) {
+            $folderPath = public_path('/uploads/pictures/user-' . Auth::user()->id . '/pet-' . $pet->id . '/');
+            // $folderPath = public_path('\uploads\avatars\1');
+            // dd(public_path('/uploads/avatars/'. Auth::user()->id . '/'));
+
+            if (!File::isDirectory($folderPath)) {
+                File::makeDirectory($folderPath, 0777, true, true);
+            }
+            // dd($folderPath);
+
+            $request->validate([
+                'fotinha' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $imageName = time() . '.' . $request->fotinha->extension();
+
+            $request->fotinha->move($folderPath, $imageName);
+
+
+            $pet->picture = $imageName;
+
+            if ($pet->update()) {
                 return redirect(RouteServiceProvider::HOME)->with([
                     'error' => 'success',
                     'msg' => 'Seu pet foi adicionado para adoção e já está visível!',
                 ]);
             } else {
-                return redirect()->route('register')->with([
+                return redirect()->route('pet.create')->with([
                     'error' => 'danger',
                     'msg' => 'Algo deu errado, por favor entre em contato com o administrador do site.',
                 ]);
@@ -107,7 +129,9 @@ class PetController extends Controller
      */
     public function show(Pet $pet)
     {
-        //
+        return view('pet-info', [
+            'pet' => $pet
+        ]);
     }
 
     /**

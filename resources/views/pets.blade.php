@@ -1,24 +1,66 @@
 @extends('layouts.app')
 @section('title', 'Lista de pets')
-@section('content')
-    @component('components.alert') @endcomponent
-    <h1>User: Lista de pets</h1>
 
+@section('content')
+@component('components.alert') @endcomponent
+
+
+<div class="container-fluid">
+    <h1>User: Lista de pets</h1>
+    <div class="row d-flex justify-content-center">
+        <!-- my php code which uses x-path to get results from xml query. -->
+        @forelse ( $pets as $pet)
+            <div class="col-md-4 mb-3">
+                <div class="card-columns-fluid d-flex justify-content-center">
+                    <div class="card " style="width: 18rem;">
+                        <img class="card-img-top" src="{{ asset($pet->pegaimg()) }}">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i style="color: {{ $pet->get_color_sex() }}" class="fs-4 {{ $pet->get_icon() }}"></i>
+                                {{ $pet->name }}
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ $pet->created_at }}</h6>
+                            <p class="card-text">{{ $pet->bio }}</p>
+                            <p class="card-text"><small class="text-muted">{{ $pet->user->name }}</small></p>
+                            <a href="{{ route('pet.show', ['pet' => $pet->id]) }}" class="btn btn-primary">Ver mais
+                                dessa
+                                fofura</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @empty
+        <p>Nenhum pet cadastrado. <a style="text-decoration:none;color:rgb(255, 174, 0)" href="{{ route('pet.create') }}"><strong>Doe um pet</strong></a> agora mesmo! :)</p>
+        @endforelse
+    </div>
+</div>
+<!--container div  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- <div class="container-fluid">
     <div class="row">
-        @foreach ($pets as $pet)
+        @forelse ($pets as $pet)
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{ asset('uploads/avatars/') }}/default/default.png" alt="Card image cap">
+                <img class="card-img-top" src="{{ asset($pet->pegaimg()) }}">
                 <div class="card-body">
                     <h5 class="card-title">
-                        @if ($pet->type === 'cat' && $pet->sex === 0)
-                            <i style="color: pink" class="fs-4 fas fa-cat"></i>
-                        @elseif ($pet->type === 'cat' && $pet->sex === 1)
-                            <i style="color: blue" class="fs-4 fas fa-cat"></i>
-                        @elseif ($pet->type === 'dog' && $pet->sex === 0)
-                            <i style="color: pink" class="fs-4 fas fa-dog"></i>
-                        @elseif ($pet->type === 'dog' && $pet->sex === 1)
-                            <i style="color: blue" class="fs-4 fas fa-dog"></i>
-                        @endif {{ $pet->name }}
+                        <i style="color: {{ $pet->get_sex() }}" class="fs-4 {{ $pet->get_icon() }}"></i>
+                        {{ $pet->name }}
                     </h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ $pet->created_at }}</h6>
                     <p class="card-text">{{ $pet->bio }}</p>
@@ -27,23 +69,17 @@
                         fofura</a>
                 </div>
             </div>
-        @endforeach
+            @empty
+            <tr>
+                <td>No pets added.</td>
+            </tr>
+        @endforelse
     </div>
+</div> --}}
 
 
+{{-- <div class="container-fluid">
 
-
-    <div class="row">
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4">
-
-        </div>
-    </div>
 
     <table class="table">
         <thead class="table-dark">
@@ -58,7 +94,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($pets as $pet)
+            @forelse ($pets as $pet)
                 <tr>
                     <th scope="row">{{ $pet->id }}</th>
                     <td>{{ $pet->name }}</td>
@@ -81,7 +117,8 @@
                         @endif
                     </td>
                     <td>{{ $pet->breed }}</td>
-                    <td><a href="{{ route('user.show', ['user' => $pet->user->id]) }}">{{ $pet->user->name }}</a></td>
+                    <td><a href="{{ route('user.show', ['user' => $pet->user->id]) }}">{{ $pet->user->name }}</a>
+                    </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                             <a class="btn btn-outline-primary" href="{{ route('pet.show', ['pet' => $pet->id]) }}"
@@ -94,51 +131,13 @@
                         </div>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="7" >Nenhum pet cadastrado. <a style="text-decoration:none;color:rgb(255, 174, 0)" href="{{ route('pet.create') }}"><strong>Doe um pet</strong></a> agora mesmo! :)</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
-
-
-
+</div> --}}
 
 @endsection
-
-
-{{-- @extends('layout.master-layout')
-@section('title', 'PETS')
-
-@section('content')
-    <table class="table">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nome do pet</th>
-                <th scope="col">Idade</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Raça</th>
-                <th scope="col">Sexooooo ( ͡° ͜ʖ ͡°)</th>
-                <th scope="col">Pertence à</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($pets as $pet)
-                <tr>
-                    <th scope="row">{{ $pet->id }}</th>
-                    <td>{{ $pet->name }}</td>
-                    <td>{{ $pet->age }}</td>
-                    <td>
-                        @if ($pet->type === 'Gato')
-                            <i class="fs-2 fas fa-cat"></i>
-                        @else
-                            <i class="fs-2 fas fa-dog"></i>
-                        @endif
-                    </td>
-                    <td>{{ $pet->breed }}</td>
-                    <td>{{ $pet->sex }}</td>
-                    <td><a href="{{ route('user.show', ['user' => $pet->user->id]) }}">{{ $pet->user->name }}</a></td>
-                </tr>
-                @endforeach
-        </tbody>
-    </table>
-    
-@endsection --}}
