@@ -41,10 +41,6 @@
                             <a class="nav-link {{ Route::currentRouteNamed('pets.index') ? 'active' : '' }}"
                                 aria-current="page" href="{{ route('pets.index') }}">Pets disponíveis</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::currentRouteNamed('users.index') ? 'active' : '' }}"
-                                aria-current="page" href="{{ route('users.index') }}">Usuários</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,6 +58,19 @@
                                         href="{{ route('pet.create') }}">Doar um pet</a></li>
                             </ul>
                         </li>
+                        @if (Auth::user()->is_admin())
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item {{ Route::currentRouteNamed('users.index') ? 'active' : '' }}"
+                                            href="{{ route('users.index') }}">Usuários</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
                 @endauth
 
@@ -69,7 +78,8 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('register') }}">Quer doar um bichinho?
-                                <span style="color:rgb(255, 174, 0)">Cadastre-se</span> agora mesmo! É gratuito, rápido e fácil! <span style="color:rgb(255, 174, 0)"><i class="pl-3 fas fa-paw"></i></span></a>
+                                <span style="color:rgb(255, 174, 0)">Cadastre-se</span> agora mesmo! É gratuito, rápido e
+                                fácil! <span style="color:rgb(255, 174, 0)"><i class="pl-3 fas fa-paw"></i></span></a>
                         </li>
                     </ul>
                 @endguest
@@ -77,9 +87,8 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @auth
                             <li class="nav-item">
-                                <img class="float-left"
-                                    src="{{ Auth::user()->get_avatar() }}"
-                                    alt="user profile pic" id="user_pic_navbar">
+                                <img class="" src="{{ Auth::user()->get_avatar() }}" alt="user profile pic"
+                                    id="user_pic_navbar">
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -115,7 +124,9 @@
             </div>
         </div>
     </nav>
-    @yield('content')
+    <div class="container-fluid">
+        @yield('content')
+    </div>
     {{-- <div class="container-fluid">
         <div class="row">
             <div class="col-md-1"></div>

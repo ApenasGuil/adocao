@@ -9,3 +9,6 @@
 - [ ] Show $user->name insted of id on URL (make slug)
 - [ ] Remove bootstrap-row from app.blade and use on each view
 - [ ] Fix all pages that used bootstrap-row
+- [x] Fix user image on mobile navbar
+- [ ] Try to recreate crop.js with bootstrap modal
+- [ ] Use Livewire/VueJS on 'Pets' option at app.blade

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,10 +76,9 @@ Route::group([
     ])->except([
         'index',
     ]);
-    Route::get('/user', function () { // Redirect admin/users to admin/users
-        return redirect()->route('users.index');
-    });
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/profile', function () { // Redirect admin/users to admin/users
+        return redirect()->route('user.show', ['user' => Auth::user()->id]);
+    })->name('profile');
 });
 
 Route::group([
@@ -88,10 +88,11 @@ Route::group([
         'checkRole:admin'
     ]
 ], function () {
-    
+    Route::get('/user', function () { // Redirect admin/users to admin/users
+        return redirect()->route('users.index');
+    });
+    Route::get('/users', [AuthController::class, 'index'])->name('users.index');
 });
-
-
 
 Route::view('/crop', 'crop-avatar')->name('sexo');
 // Route::POST('/crop_avatar', [AuthController::class, 'crop_avatar'])->name('imageupload');

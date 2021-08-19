@@ -23,7 +23,7 @@ class PetController extends Controller
     public function index()
     {
         $pets = Pet::orderBy('id', 'desc')->get();
-        return view('pets', [
+        return view('petsIndex', [
             'pets' => $pets
         ]);
     }
@@ -35,7 +35,7 @@ class PetController extends Controller
      */
     public function create()
     {
-        return view('register-pet');
+        return view('petRegister');
     }
 
     /**
@@ -46,20 +46,23 @@ class PetController extends Controller
      */
     public function store(User $user, Request $request)
     {
+        
         $input['name'] = $request->name;
-        $input['age'] = $request->age;
-        $input['sex'] = $request->sex;
         $input['type'] = $request->type;
         $input['breed'] = $request->breed;
+        $input['sex'] = $request->sex;
+        $input['age'] = $request->age;
+        $input['ageType'] = $request->ageType;
         $input['bio'] = $request->bio;
-        $input['foto'] = $request->fotinha;
+        $input['fotinha'] = $request->fotinha;
 
         $rules = [
             'name' => 'required',
-            'age' => 'required',
-            'sex' => 'required',
             'type' => 'required',
             'breed' => 'required',
+            'sex' => 'required',
+            'age' => 'required',
+            'ageType' => 'required',
             'bio' => 'required',
             'fotinha' => 'mimes:jpeg,bmp,png,svg',
         ];
@@ -67,22 +70,28 @@ class PetController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
-            return redirect()->route('register')->with([
+            return redirect()->route('pet.create')->with([
                 'error' => 'danger',
                 'msg' => 'Campos inválidos. Tente novamente.',
-            ]);
+            ])->withInput($request->all());
         } else {
             $pet = new Pet;
             $pet->user_id = Auth::user()->id;
             $pet->name = $request->name;
-            $pet->age = $request->age;
+            $pet->type = $request->type;
+            $pet->breed = $request->breed;
             if ($request->sex == 'male') {
                 $pet->sex = '1';
             } else {
                 $pet->sex = '0';
             }
-            $pet->type = $request->type;
-            $pet->breed = $request->breed;
+            if ($request->ageType == 'year') {
+                $pet->age = number_format((float)$request->age, 1, '.', '');
+            } else {
+                // $age = floatval($request->age);
+                // $pet->age = $age;
+                $pet->age = '0.' . $request->age;
+            }
             $pet->bio = $request->bio;
             $pet->picture = 'null';
             $pet->save();
@@ -129,7 +138,7 @@ class PetController extends Controller
      */
     public function show(Pet $pet)
     {
-        return view('pet-info', [
+        return view('petInfo', [
             'pet' => $pet
         ]);
     }

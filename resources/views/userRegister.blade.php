@@ -1,47 +1,53 @@
 @extends('layouts.app')
 @section('title', 'Login')
+
 @section('content')
-    @component('components.alert') @endcomponent
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <h2 class="mt-3">Cadastro</h2>
+            @component('components.alert') @endcomponent
+            <form class="form-signin needs-validation mt-3" method="post" action="{{ route('register.do') }}" novalidate>
+                @csrf
+                <div class="form-floating mb-3">
+                    <input value="{{ old('name') }}" type="text" class="form-control" aria-describedby="name" name="name"
+                        id="name" placeholder="Nome" required>
+                    <label for="name">Nome completo</label>
+                    <div class="invalid-feedback">
+                        Nome inválido.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input value="{{ old('cpf') }}" class="form-control cpf" aria-describedby="cpf" name="cpf" id="cpf"
+                        placeholder="CPF" required>
+                    <label for="cpf">CPF</label>
+                    <div id="cpf" class="form-text">CPF meramente para nossa e sua proteção.</div>
+                    <div class="invalid-feedback">
+                        CPF inválido.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input value="{{ old('email') }}" type="email" class="form-control" aria-describedby="email"
+                        name="email" id="email" placeholder="E-mail" required>
+                    <label for="email">E-mail</label>
+                    <div class="invalid-feedback">
+                        E-mail inválido.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" aria-describedby="password" name="password" id="password"
+                        placeholder="password" required>
+                    <label for="email">Senha</label>
+                    <div class="invalid-feedback">
+                        Senha inválido.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-dark">Cadastrar</button>
+            </form>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
 
-    <h2 class="mt-3">Cadastro</h2>
-
-    <form class="form-signin needs-validation mt-3" method="post" action="{{ route('register.do') }}" novalidate>
-        @csrf
-        <div class="form-floating mb-3">
-            <input value="{{ old('name') }}" type="text" class="form-control" aria-describedby="name" name="name"
-                id="name" placeholder="Nome" required>
-            <label for="name">Nome completo</label>
-            <div class="invalid-feedback">
-                Nome inválido.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input value="{{ old('cpf') }}" class="form-control cpf" aria-describedby="cpf" name="cpf" id="cpf"
-                placeholder="CPF" required>
-            <label for="cpf">CPF</label>
-            <div id="cpf" class="form-text">CPF meramente para nossa e sua proteção.</div>
-            <div class="invalid-feedback">
-                CPF inválido.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input value="{{ old('email') }}" type="email" class="form-control" aria-describedby="email" name="email"
-                id="email" placeholder="E-mail" required>
-            <label for="email">E-mail</label>
-            <div class="invalid-feedback">
-                E-mail inválido.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" aria-describedby="password" name="password" id="password"
-                placeholder="password" required>
-            <label for="email">Senha</label>
-            <div class="invalid-feedback">
-                Senha inválido.
-            </div>
-        </div>
-        <button type="submit" class="btn btn-dark">Cadastrar</button>
-    </form>
 @endsection
 @push('my-scripts')
     <script>

@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
-    public function profile()
+    public function index()
     {
-        $user = User::where('id', '1')->first();
-        return view('profile', [
-            'user' => $user
+        $users = User::all();
+        return view('admin.usersIndex', [
+            'users' => $users
         ]);
     }
-
+    
     public function crop_avatar(Request $request)
     {
         // usar validor em images
@@ -122,7 +122,7 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        return view('loginForm');
+        return view('userLogin');
     }
 
     public function login(Request $request)
@@ -146,7 +146,7 @@ class AuthController extends Controller
 
     public function showRegisterForm()
     {
-        return view('registerForm');
+        return view('userRegister');
     }
 
     public function register(Request $request)

@@ -2,16 +2,11 @@
 @section('title', 'Lista de pets')
 
 @section('content')
-@component('components.alert') @endcomponent
-
-
-<div class="container-fluid">
-    <h1>User: Lista de pets</h1>
-    <div class="row d-flex justify-content-center">
-        <!-- my php code which uses x-path to get results from xml query. -->
+    <div class="row mb-3">
+        @component('components.alert') @endcomponent
         @forelse ( $pets as $pet)
-            <div class="col-md-4 mb-3">
-                <div class="card-columns-fluid d-flex justify-content-center">
+            <div class="col-md-4">
+                <div class="card-columns-fluid d-flex justify-content-center mt-3">
                     <div class="card " style="width: 18rem;">
                         <img class="card-img-top" src="{{ asset($pet->pegaimg()) }}">
                         <div class="card-body">
@@ -30,11 +25,10 @@
                 </div>
             </div>
         @empty
-        <p>Nenhum pet cadastrado. <a style="text-decoration:none;color:rgb(255, 174, 0)" href="{{ route('pet.create') }}"><strong>Doe um pet</strong></a> agora mesmo! :)</p>
+            <p class="mt-3">Nenhum pet cadastrado. <a style="text-decoration:none;color:rgb(255, 174, 0)"
+                    href="{{ route('pet.create') }}"><strong>Doe um pet</strong></a> agora mesmo! :)</p>
         @endforelse
     </div>
-</div>
-<!--container div  -->
 
 
 
@@ -52,7 +46,7 @@
 
 
 
-{{-- <div class="container-fluid">
+    {{-- <div class="container-fluid">
     <div class="row">
         @forelse ($pets as $pet)
             <div class="card" style="width: 18rem;">
@@ -78,7 +72,7 @@
 </div> --}}
 
 
-{{-- <div class="container-fluid">
+    {{-- <div class="container-fluid">
 
 
     <table class="table">
@@ -141,3 +135,12 @@
 </div> --}}
 
 @endsection
+@push('my-scripts')
+    <script>
+        $("document").ready(function() {
+            setTimeout(function() {
+                $("div.alert").remove();
+            }, 2500);
+        });
+    </script>
+@endpush

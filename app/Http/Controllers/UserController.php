@@ -10,19 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $users = User::all();
-        return view('admin.users', [
-            'users' => $users
-        ]);
-    }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -52,7 +40,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('profile', [
+        return view('userProfile', [
             'user' => $user
         ]);
     }
@@ -112,6 +100,12 @@ class UserController extends Controller
             }
             $image_parts = explode(";base64,", $input['base64image']);
             $image_type_aux = explode("image/", $image_parts[0]);
+            if($image_type_aux[0] == ""){
+                return redirect()->back()->with([
+                    'error' => 'danger',
+                    'msg' => 'Selecione uma nova foto de perfil antes de enviar.',
+                ]);
+            }
             $image_type = $image_type_aux[1];
             $image_base64 = base64_decode($image_parts[1]);
             // $file = $folderPath . uniqid() . '.png';
@@ -123,7 +117,11 @@ class UserController extends Controller
             $user->avatar = $filename;
             $user->save();
 
-            return redirect('/crop');
+            return redirect()->back()->with([
+                'error' => 'success',
+                'msg' => 'Foto de perfil salva com sucesso.',
+            ]);
         }
+        
     }
 }
