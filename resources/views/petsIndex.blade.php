@@ -8,7 +8,8 @@
             <div class="col-md-4">
                 <div class="card-columns-fluid d-flex justify-content-center mt-3">
                     <div class="card " style="width: 18rem;">
-                        <img class="card-img-top" src="{{ asset($pet->pegaimg()) }}">
+                        <img style="min-width: 25px; max-width: 350px; height: 200px" class="card-img-top"
+                            src="{{ asset($pet->pegaimg()) }}">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i style="color: {{ $pet->get_color_sex() }}" class="fs-4 {{ $pet->get_icon() }}"></i>

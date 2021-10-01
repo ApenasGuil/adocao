@@ -22,7 +22,7 @@ class AuthController extends Controller
             'users' => $users
         ]);
     }
-    
+
     public function crop_avatar(Request $request)
     {
         // usar validor em images
