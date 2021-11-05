@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 
 class PetController extends Controller
 {
@@ -46,7 +47,20 @@ class PetController extends Controller
      */
     public function store(User $user, Request $request)
     {
-        
+        $file = $request->file('fotinha');
+        Storage::disk('s3')->put('avatars/1', $file);
+        $path = Storage::putFileAs(
+            'avatars',
+            $request->file('avatar'),
+            $request->user()->id
+        );
+        dd('foi');
+
+        $file = $request->file('fotinha');
+        $filename = $file->getClientOriginalName();
+        $file->storeAs('avatars/' . $user->id, $filename, 's3');
+        dd('done');
+
         $input['name'] = $request->name;
         $input['type'] = $request->type;
         $input['breed'] = $request->breed;
@@ -96,6 +110,20 @@ class PetController extends Controller
             $pet->picture = 'null';
             $pet->save();
 
+            //dd($request->all());
+
+            $path = $request->file('fotinha')->store('novo', 's3');
+
+            dd('s3');
+
+            // if ($request->hasFile('fotinha')) {
+            //     $file = $request->file('fotinha');
+            //     $filename = $file->getClientOriginalName();
+            //     $file->storeAs('adocao/' . $user->id, $filename, 's3');
+            //     dd('s3');
+            // }
+
+            dd('saiu');
             $folderPath = public_path('/uploads/pictures/user-' . Auth::user()->id . '/pet-' . $pet->id . '/');
             // $folderPath = public_path('\uploads\avatars\1');
             // dd(public_path('/uploads/avatars/'. Auth::user()->id . '/'));
